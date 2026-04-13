@@ -1,0 +1,59 @@
+﻿@model List<BlobModel>
+
+@{
+    ViewData["Title"] = "ListBlobs";
+}
+
+<h1>ListBlobs</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Url
+            </th>
+            <th>
+                Container
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-controller="AzureBlobs" asp-action="DeleteBlob" asp-route-containername="@item.Container"
+                asp-route-blobname="@item.Nombre"
+                class="btn btn-danger">
+                        Delete Blob: @item.Nombre    
+                </a>
+            </td>
+            <td>
+                <a asp-controller="AzureBlobs"
+                   asp-action="GetBlobFile"
+                   asp-route-containername="@item.Container"
+                   asp-route-blobname="@item.Nombre"
+                   target="_blank">
+                        @item.Nombre
+                </a>
+            </td>
+            <td>
+                @item.Container
+            </td>
+            <td>
+                <img asp-controller="AzureBlobs"
+                     asp-action="GetBlobFile"
+                     asp-route-containername="@item.Container"
+                     asp-route-blobname="@item.Nombre"
+                     style="max-width: 100px; max-height: 100px;" />
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

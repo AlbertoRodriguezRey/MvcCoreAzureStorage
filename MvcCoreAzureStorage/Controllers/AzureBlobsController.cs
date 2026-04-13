@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Mvc;
 using MvcCoreAzureStorage.Models;
 using MvcCoreAzureStorage.Services;
 
@@ -12,21 +13,28 @@ namespace MvcCoreAzureStorage.Controllers
         {
             this.service = service;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<string> containers = this.service.GetContainersAsync().Result;
-            return View();
+            List<string> containers = await this.service.GetContainersAsync();
+            return View(containers);
         }
 
-        public async Task<IActionResult> CreateContainer()
+        public IActionResult CreateContainer()
         {
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> CreateContainer(string containerName)
         {
+            if (string.IsNullOrWhiteSpace(containerName))
+            {
+                ViewData["MENSAJE"] = "Debe indicar un nombre de contenedor";
+                return View();
+            }
+
             await this.service.CreateContainerAsync(containerName);
-            return RedirectToAction("Index");
+            ViewData["MENSAJE"] = "Container creado OK";
+            return View();
         }
 
         public async Task<IActionResult> DeleteContainer(string containerName)
@@ -39,6 +47,19 @@ namespace MvcCoreAzureStorage.Controllers
         {
             List<BlobModel> models = await this.service.GetBlobsAsync(containerName);
             return View(models);
+        }
+
+        public async Task<IActionResult> GetBlobFile(string containerName, string blobName)
+        {
+            BlobDownloadInfo data = await this.service.GetBlobFileAsync(containerName, blobName);
+            string contentType = data.ContentType ?? "application/octet-stream";
+            return File(data.Content, contentType);
+        }
+
+        public async Task<IActionResult> DeleteBlob(string containerName, string blobName)
+        {
+            await this.service.DeleteBlobAsync(containerName, blobName);
+            return RedirectToAction("ListBlobs", new { containerName = containerName });
         }
 
         public async Task<IActionResult> UploadBlob(string containerName)

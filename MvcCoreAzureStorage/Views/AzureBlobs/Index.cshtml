@@ -29,6 +29,12 @@
                    class="btn btn-primary btn-sm float-right mr-2">
                     Upload Blob
                 </a>
+                <a asp-controller="AzureBlobs"
+                   asp-action="ListBlobs"
+                   asp-route-containername="@container"
+                   class="btn btn-secondary btn-sm float-right mr-2">
+                    List Blobs
+                </a>
             </li>
         }
     </ul>

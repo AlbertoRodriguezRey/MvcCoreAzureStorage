@@ -26,7 +26,7 @@ namespace MvcCoreAzureStorage.Services
         //METODO PARA CREAR UN CONTAINER
         public async Task CreateContainerAsync(string containerName)
         {
-            await this.client.CreateBlobContainerAsync(containerName.ToLower(), PublicAccessType.Blob);
+            await this.client.CreateBlobContainerAsync(containerName.ToLower(), PublicAccessType.None);
         }
 
         //METODO PARA ELIMINAR UN CONTAINER
@@ -50,6 +50,14 @@ namespace MvcCoreAzureStorage.Services
                 blobs.Add(blob);
             }
             return blobs;
+        }
+
+        public async Task<BlobDownloadInfo> GetBlobFileAsync(string containerName, string blobName)
+        {
+            BlobContainerClient containerClient = this.client.GetBlobContainerClient(containerName);
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+            BlobDownloadInfo data = await blobClient.DownloadAsync();
+            return data;
         }
 
         //METODO PARA ELIMINAR UN FICHERO
