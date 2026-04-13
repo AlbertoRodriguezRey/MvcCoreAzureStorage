@@ -1,0 +1,19 @@
+﻿<h1>
+    Upload Azure File
+</h1>
+<p>
+    <a asp-controller="AzureFiles"
+       asp-action="Index">
+        Back to Index
+    </a>
+</p>
+
+<form method="post" enctype="multipart/form-data">
+    <label>Selecicone un fichero</label>
+    <input type="file" name="file" class="form-control" />
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+<h2 style="color:red">
+    @ViewData["MENSAJE"]
+</h2>
