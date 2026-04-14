@@ -23,8 +23,8 @@ namespace MvcCoreAzureStorage.Models
             }
         }
 
-        private int _Empresa;
-        public int Empresa
+        private string _Empresa;
+        public string Empresa
         {
             get { return this._Empresa; }
             set

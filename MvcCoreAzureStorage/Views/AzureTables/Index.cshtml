@@ -1,0 +1,72 @@
+﻿@model List<Cliente>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form method="post">
+    <div class="form-group">
+        <label>Introduzca Empresa:</label>
+        <input type="text" name="empresa" class="form-control" />
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Edad
+                </th>
+                <th>
+                    Salario
+                </th>
+                <th>
+                    IdCliente
+                </th>
+                <th>
+                    Empresa
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Edad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salario)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdCliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empresa)
+                    </td>
+                    <td>
+                        <a asp-controller="AzureTables" asp-action="Edit" asp-route-partitionKey="@item.PartitionKey" asp-route-rowKey="@item.RowKey">Edit</a> |
+                        <a asp-controller="AzureTables" asp-action="Details" asp-route-partitionKey="@item.PartitionKey" asp-route-rowKey="@item.RowKey">Details</a> |
+                        <a asp-controller="AzureTables" asp-action="Delete" asp-route-partitionKey="@item.PartitionKey" asp-route-rowKey="@item.RowKey">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
